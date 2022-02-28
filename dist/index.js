@@ -4,15 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const goods_1 = __importDefault(require("./routes/goods"));
-const user_1 = __importDefault(require("./routes/user"));
+const schemas_1 = __importDefault(require("./schemas"));
+const goods_1 = __importDefault(require("./routers/goods"));
 const app = (0, express_1.default)();
 const port = 3000;
+(0, schemas_1.default)();
+app.use("/api", [goods_1.default]);
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(express_1.default.json());
 app.use(express_1.default.static("public"));
-app.use("/goods", goods_1.default);
-app.use("/user", user_1.default);
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.get("/", (req, res) => {

@@ -1,15 +1,16 @@
 import express from "express";
-import goodsRouter from "./routes/goods";
-import userRouter from "./routes/user";
+import connect from "./schemas";
+import goodsRouter from "./routers/goods";
 
 const app = express();
 const port = 3000;
+connect();
+
+app.use("/api", [goodsRouter]);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
-app.use("/goods", goodsRouter);
-app.use("/user", userRouter);
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
