@@ -6,8 +6,8 @@ const goodsRouter = express.Router();
 
 goodsRouter.get("/goods", async (req, res, next) => {
   try {
-    const { category } = req.query;
-    const goods = await Goods.find({ category }).sort("-goodsId");
+    const category = req.query;
+    const goods = await Goods.find(category).sort("-goodsId");
     res.json({ goods: goods });
   } catch (err) {
     console.error(err);
@@ -17,16 +17,13 @@ goodsRouter.get("/goods", async (req, res, next) => {
 
 goodsRouter.get("/goods/:goodsId", async (req, res) => {
   const { goodsId } = req.params;
-  const goods = await Goods.findOne({ goodsId: goodsId });
+  const goods = await Goods.findOne({ goodsId });
   res.json({ detail: goods });
 });
 
 goodsRouter.post("/goods", async (req, res) => {
-  console.log("Body: ", req);
   const goods: goodsDTO = req.body;
-
   const isExist = await Goods.find({ goodsId: goods.goodsId });
-
   if (isExist.length === 0) {
     await Goods.create(goods);
   }
