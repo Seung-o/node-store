@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const goods_1 = __importDefault(require("../schemas/goods"));
+const cart_1 = __importDefault(require("../schemas/cart"));
 const express_1 = __importDefault(require("express"));
 const goodsRouter = express_1.default.Router();
 goodsRouter.get("/goods", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -22,7 +23,6 @@ goodsRouter.get("/goods", (req, res, next) => __awaiter(void 0, void 0, void 0, 
         res.json({ goods: goods });
     }
     catch (err) {
-        console.error(err);
         next(err);
     }
 }));
@@ -36,6 +36,18 @@ goodsRouter.post("/goods", (req, res) => __awaiter(void 0, void 0, void 0, funct
     const isExist = yield goods_1.default.find({ goodsId: goods.goodsId });
     if (isExist.length === 0) {
         yield goods_1.default.create(goods);
+    }
+    res.send({ result: "success" });
+}));
+goodsRouter.post("/goods/:goodsId/cart", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { goodsId } = req.params;
+    const { quantity } = req.body;
+    const isCart = yield cart_1.default.find({ goodsId });
+    if (isCart.length) {
+        yield cart_1.default.updateOne({ goodsId }, { $set: { quantity } });
+    }
+    else {
+        yield cart_1.default.create({ goodsId: goodsId, quantity: quantity });
     }
     res.send({ result: "success" });
 }));
