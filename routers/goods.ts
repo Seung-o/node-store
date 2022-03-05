@@ -43,4 +43,45 @@ goodsRouter.post("/goods/:goodsId/cart", async (req, res) => {
   res.send({ result: "success" });
 });
 
+goodsRouter.delete("/goods/:goodsId/cart", async (req, res) => {
+  const { goodsId } = req.params;
+  const isGoodsInCart = await Cart.find({ goodsId });
+
+  if (isGoodsInCart.length > 0) {
+    await Cart.deleteOne({ goodsId });
+  }
+
+  res.send({ result: "sucess" });
+});
+
+goodsRouter.patch("/goods/:goodsId/cart", async (req, res) => {
+  const { goodsId } = req.params;
+  const { quantity } = req.body;
+
+  const isGoodsInCart = await Cart.find({ goodsId });
+  if (isGoodsInCart.length > 0) {
+    await Cart.updateOne({ goodsId }, { $set: { quantity } });
+  }
+  res.send();
+});
+
+goodsRouter.get("/cart", async (req, res) => {
+  const cart = await Cart.find({});
+  const goodsId = cart.map((cart) => cart.goodsId);
+
+  const goodsInCart = await Goods.find().where("goodsId").in(goodsId);
+
+  const concatCart = cart.map((c) => {
+    for (let i = 0; i < goodsInCart.length; i++) {
+      if (goodsInCart[i].goodsId == c.goodsId) {
+        return { quantity: c.quantity, goods: goodsInCart[i] };
+      }
+    }
+  });
+
+  res.json({
+    cart: concatCart,
+  });
+});
+
 export default goodsRouter;

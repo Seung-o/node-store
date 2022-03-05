@@ -14,7 +14,7 @@ app.use("/api", [goodsRouter]);
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
-app.use(express.static("views"));
+app.use(express.static(__dirname + "."));
 
 app.get("/", (req, res) => {
   res.send("Hello it is node store");

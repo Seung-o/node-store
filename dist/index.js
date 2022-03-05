@@ -16,7 +16,7 @@ app.use(body_parser_1.default.json());
 app.use("/api", [goods_1.default]);
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
-app.use(express_1.default.static("views"));
+app.use(express_1.default.static(__dirname + "."));
 app.get("/", (req, res) => {
     res.send("Hello it is node store");
 });

@@ -51,4 +51,36 @@ goodsRouter.post("/goods/:goodsId/cart", (req, res) => __awaiter(void 0, void 0,
     }
     res.send({ result: "success" });
 }));
+goodsRouter.delete("/goods/:goodsId/cart", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { goodsId } = req.params;
+    const isGoodsInCart = yield cart_1.default.find({ goodsId });
+    if (isGoodsInCart.length > 0) {
+        yield cart_1.default.deleteOne({ goodsId });
+    }
+    res.send({ result: "sucess" });
+}));
+goodsRouter.patch("/goods/:goodsId/cart", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { goodsId } = req.params;
+    const { quantity } = req.body;
+    const isGoodsInCart = yield cart_1.default.find({ goodsId });
+    if (isGoodsInCart.length > 0) {
+        yield cart_1.default.updateOne({ goodsId }, { $set: { quantity } });
+    }
+    res.send();
+}));
+goodsRouter.get("/cart", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const cart = yield cart_1.default.find({});
+    const goodsId = cart.map((cart) => cart.goodsId);
+    const goodsInCart = yield goods_1.default.find().where("goodsId").in(goodsId);
+    const concatCart = cart.map((c) => {
+        for (let i = 0; i < goodsInCart.length; i++) {
+            if (goodsInCart[i].goodsId == c.goodsId) {
+                return { quantity: c.quantity, goods: goodsInCart[i] };
+            }
+        }
+    });
+    res.json({
+        cart: concatCart,
+    });
+}));
 exports.default = goodsRouter;
