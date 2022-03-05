@@ -76,9 +76,9 @@
 
       function make_card(item) {
         let htmlTemp = `<div>
-                                    <div class="card mb-2" onclick="location.href='/detail?goodsId=${
-                                      item["goodsId"]
-                                    }'">
+                          <div class="card mb-2" onclick="location.href='/detail?goodsId=${
+                            item["goodsId"]
+                          }'">
                                         <div class="row no-gutters">
                                             <div class="col-sm-5" style="background: #868e96;">
                                                 <img src="${
@@ -103,7 +103,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                  </div>
                                 </div>`;
         $("#goodsList").append(htmlTemp);
       }
