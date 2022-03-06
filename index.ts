@@ -14,7 +14,7 @@ app.use("/api", [goodsRouter]);
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "."));
+app.use(express.static(__dirname + "/."));
 
 app.get("/", (req, res) => {
   res.send("Hello it is node store");
@@ -30,6 +30,10 @@ app.get("/detail", (req, res) => {
 
 app.get("/cart", (req, res) => {
   res.render("cart");
+});
+
+app.get("/order", (req, res) => {
+  res.render("order");
 });
 
 app.listen(port, () => {

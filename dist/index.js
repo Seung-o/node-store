@@ -16,7 +16,7 @@ app.use(body_parser_1.default.json());
 app.use("/api", [goods_1.default]);
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
-app.use(express_1.default.static(__dirname + "."));
+app.use(express_1.default.static(__dirname + "/."));
 app.get("/", (req, res) => {
     res.send("Hello it is node store");
 });
@@ -29,6 +29,9 @@ app.get("/detail", (req, res) => {
 });
 app.get("/cart", (req, res) => {
     res.render("cart");
+});
+app.get("/order", (req, res) => {
+    res.render("order");
 });
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
